@@ -207,3 +207,37 @@ body {
 .confetti { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 1100; }
 .confetti i { position: absolute; width: 8px; height: 14px; background: var(--primary); transform: rotate(15deg); opacity: .9; will-change: transform, opacity; }
 
+/* Responsive enhancements */
+@media (max-width: 1024px) {
+  .kpis { grid-template-columns: repeat(2, 1fr); }
+  .board { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 700px) {
+  .container { padding: 12px; }
+  .app-header { flex-wrap: wrap; gap: 8px; }
+  .actions { width: 100%; justify-content: flex-end; flex-wrap: wrap; }
+
+  .tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .tab { white-space: nowrap; }
+
+  .row { flex-wrap: wrap; gap: 8px; }
+  .row .btn { width: 100%; }
+
+  .kpis { grid-template-columns: 1fr 1fr; }
+  .stats-grid { grid-template-columns: 1fr; }
+
+  .task-item { flex-direction: column; align-items: stretch; }
+  .task-item .left { justify-content: flex-start; }
+  .task-item .right { justify-content: flex-end; }
+  .recent-item { flex-direction: column; align-items: flex-start; gap: 6px; }
+
+  .form-grid { grid-template-columns: 1fr; }
+  .form-grid .span-2 { grid-column: auto; }
+}
+
+@media (max-width: 400px) {
+  .title { font-size: 18px; }
+  .btn, .input, .select, .textarea { font-size: 14px; }
+}
+
