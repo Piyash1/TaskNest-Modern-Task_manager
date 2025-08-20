@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="hero fancy">
+	<div class="hero-bg">
+		<div class="blob b1"></div>
+		<div class="blob b2"></div>
+		<div class="blob b3"></div>
+	</div>
+	<div class="hero-inner card glass">
+		<img src="{% static 'images/logo.png' %}" alt="TaskNest" class="hero-logo" />
+		<h1 class="hero-title gradient-text">Organize your day with TaskNest</h1>
+		<p class="hero-sub">Fast, delightful task management with priorities, filters, and progress tracking.</p>
+		<div class="hero-actions">
+			<a href="{% url 'signup' %}" class="btn primary lg">Get Started</a>
+			<a href="{% url 'login' %}" class="btn lg">Login</a>
+		</div>
+	</div>
+
+	<div class="features">
+		<div class="feature card">
+			<h3 class="gradient-text">Stay focused</h3>
+			<p>Quick filters and tabs keep what matters front and center.</p>
+		</div>
+		<div class="feature card">
+			<h3 class="gradient-text">Visual progress</h3>
+			<p>Clean dashboards and stats help you track completion.</p>
+		</div>
+		<div class="feature card">
+			<h3 class="gradient-text">Lightning fast</h3>
+			<p>Instant updates with AJAX and smooth micro‑interactions.</p>
+		</div>
+	</div>
+</section>
+{% endblock %}
+
+

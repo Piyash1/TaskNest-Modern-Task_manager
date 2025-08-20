@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="auth-wrap">
+	<div class="auth card glass">
+		<h2 class="title gradient-text" style="text-align:center; margin-bottom:8px;">Create your account</h2>
+		<form method="post" class="auth-form">
+			{% csrf_token %}
+			{{ form.non_field_errors }}
+			<div>
+				<label class="label">Username</label>
+				<input type="text" name="username" class="input" required placeholder="Choose a username"
+				       value="{{ form.username.value|default_if_none:'' }}" />
+				{{ form.username.errors }}
+			</div>
+			<div>
+				<label class="label">Password</label>
+				<input type="password" name="password1" class="input" required placeholder="Create a password" />
+				{{ form.password1.errors }}
+			</div>
+			<div>
+				<label class="label">Confirm password</label>
+				<input type="password" name="password2" class="input" required placeholder="Confirm your password" />
+				{{ form.password2.errors }}
+			</div>
+			<button class="btn primary lg" type="submit" style="width:100%; margin-top:8px;">Sign up</button>
+			<div style="text-align:center; margin-top:8px;">
+				<a class="btn" href="{% url 'login' %}">Login instead</a>
+			</div>
+		</form>
+	</div>
+</section>
+{% endblock %}
+
+

@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="layout">
+	<aside class="sidebar">
+		<div class="section">
+			<div class="label">Productivity</div>
+			<div class="progress" style="--progress: {{ completion_rate }}%"></div>
+		</div>
+		<div class="section">
+			<a class="btn" href="#" data-status="all">Dashboard</a>
+			<a class="btn" href="#" data-status="active">Pending Tasks</a>
+			<a class="btn" href="#" data-status="completed">Completed Tasks</a>
+		</div>
+		<div class="section">
+			<input id="searchInput" class="input" type="text" placeholder="Search" value="{{ request.GET.q|default:'' }}" />
+		</div>
+		<input type="hidden" id="statusFilter" value="{{ current_status }}" />
+		<div class="section">
+			<label class="label">Priority</label>
+			<select id="priorityFilter" class="select">
+				<option value="">All</option>
+				<option value="high" {% if request.GET.priority == 'high' %}selected{% endif %}>High</option>
+				<option value="medium" {% if request.GET.priority == 'medium' %}selected{% endif %}>Medium</option>
+				<option value="low" {% if request.GET.priority == 'low' %}selected{% endif %}>Low</option>
+			</select>
+		</div>
+		<div class="section">
+			<label class="label">Category</label>
+			<select id="categoryFilter" class="select">
+				<option value="">All</option>
+				{% for c in categories %}
+				<option value="{{ c.id }}" {% if request.GET.category == c.id|slugify %}selected{% endif %}>{{ c.name }}</option>
+				{% endfor %}
+			</select>
+		</div>
+		<div class="section">
+			<label class="label">Sort by</label>
+			<select id="sortSelect" class="select">
+				<option value="created">Date created</option>
+				<option value="due" {% if request.GET.sort == 'due' %}selected{% endif %}>Due date</option>
+				<option value="priority" {% if request.GET.sort == 'priority' %}selected{% endif %}>Priority</option>
+				<option value="alpha" {% if request.GET.sort == 'alpha' %}selected{% endif %}>Alphabetical</option>
+			</select>
+		</div>
+	</aside>
+	<section class="content">
+		<div class="overview card">
+			<div class="row">
+				<h2 class="title">Task Overview</h2>
+				<button class="btn primary" data-open-create>+ Add New Task</button>
+			</div>
+			<div class="kpis">
+				<div class="kpi stat"><div class="kpi-label">Total Tasks</div><div class="kpi-value">{{ total_all }}</div></div>
+				<div class="kpi stat"><div class="kpi-label">Low Priority</div><div class="kpi-value">{{ low_count }}</div></div>
+				<div class="kpi stat"><div class="kpi-label">Medium Priority</div><div class="kpi-value">{{ med_count }}</div></div>
+				<div class="kpi stat"><div class="kpi-label">High Priority</div><div class="kpi-value">{{ high_count }}</div></div>
+			</div>
+		</div>
+
+		<div class="tabs card">
+			<a href="#" class="tab{% if current_status == 'all' and not current_priority %} active{% endif %}" data-status="all">All</a>
+			<a href="#" class="tab" data-quick="today">Today</a>
+			<a href="#" class="tab" data-quick="week">Week</a>
+			<a href="#" class="tab{% if current_priority == 'high' %} active{% endif %}" data-priority="high">High</a>
+			<a href="#" class="tab{% if current_priority == 'medium' %} active{% endif %}" data-priority="medium">Medium</a>
+			<a href="#" class="tab{% if current_priority == 'low' %} active{% endif %}" data-priority="low">Low</a>
+		</div>
+
+		<div class="board">
+			<div class="main-col">
+				<ul id="taskList" class="task-list" data-sort="{{ request.GET.sort|default:'created' }}">
+					{% for task in tasks %}
+						{% include 'taskmanager/partials/task_item.html' with task=task %}
+					{% empty %}
+						<li class="empty">No tasks yet. Create one!</li>
+					{% endfor %}
+				</ul>
+				<div class="add-row" data-open-create>+ Add New Task</div>
+			</div>
+			<aside class="side-col">
+				<div class="panel card">
+					<h3>Task Statistics</h3>
+					<div class="stats-grid">
+						<div class="stat"><div class="stat-label">Total</div><div class="stat-value">{{ total_all }}</div></div>
+						<div class="stat"><div class="stat-label">Completed</div><div class="stat-value">{{ completed_all }}</div></div>
+						<div class="stat"><div class="stat-label">Pending</div><div class="stat-value">{{ pending_all }}</div></div>
+						<div class="stat"><div class="stat-label">Completion Rate</div><div class="stat-value">{{ completion_rate }}%</div></div>
+					</div>
+				</div>
+				<div class="panel card">
+					<h3>Task Progress</h3>
+					<div class="progress" style="--progress: {{ completion_rate }}%"></div>
+				</div>
+				<div class="panel card">
+					<h3>Recent Activity</h3>
+					<ul class="recent">
+						{% for r in recent %}
+							<li class="recent-item">
+								<span>{{ r.title }}</span>
+								<span class="badge {% if r.completed %}priority-low{% else %}priority-medium{% endif %}">{% if r.completed %}Done{% else %}Active{% endif %}</span>
+							</li>
+						{% empty %}
+							<li class="empty">No recent updates</li>
+						{% endfor %}
+					</ul>
+				</div>
+			</aside>
+		</div>
+	</section>
+</section>
+
+<template id="taskFormTemplate">
+	{% include 'taskmanager/partials/task_form.html' %}
+</template>
+{% endblock %}
+

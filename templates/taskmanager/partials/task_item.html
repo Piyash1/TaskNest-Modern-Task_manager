@@ -1,0 +1,24 @@
+<li class="task-item {% if task.completed %}completed{% endif %} {% if task.is_overdue %}overdue{% endif %}" data-id="{{ task.id }}">
+	<div class="left">
+		<form class="inline" method="post" action="{% url 'task_toggle' task.id %}" data-ajax>
+			{% csrf_token %}
+			<button class="checkbox" aria-label="Toggle complete">{% if task.completed %}✓{% else %}&nbsp;{% endif %}</button>
+		</form>
+		<div class="details">
+			<div class="title">{{ task.title }}</div>
+			<div class="meta">
+				<span class="badge priority-{{ task.priority }}">{{ task.get_priority_display }}</span>
+				{% if task.category %}<span class="badge category" style="--cat: {{ task.category.color }}">{{ task.category.name }}</span>{% endif %}
+				{% if task.due_date %}<span class="badge due">Due {{ task.due_date }}</span>{% endif %}
+			</div>
+		</div>
+	</div>
+	<div class="right">
+		<button class="icon edit" data-edit aria-label="Edit">✎</button>
+		<form class="inline" method="post" action="{% url 'task_delete' task.id %}" data-ajax data-confirm="Delete this task?">
+			{% csrf_token %}
+			<button class="icon delete" aria-label="Delete">🗑</button>
+		</form>
+	</div>
+</li>
+

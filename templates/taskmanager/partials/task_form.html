@@ -1,0 +1,34 @@
+<form id="taskForm" method="post" action="{% url 'task_create' %}" data-ajax>
+	{% csrf_token %}
+	<div class="form-grid">
+		<div class="field">
+			<label class="label">Title</label>
+			{{ form.title }}
+		</div>
+		<div class="field span-2">
+			<label class="label">Description</label>
+			{{ form.description }}
+		</div>
+		<div class="field">
+			<label class="label">Priority</label>
+			{{ form.priority }}
+		</div>
+		<div class="field">
+			<label class="label">Due date</label>
+			{{ form.due_date }}
+		</div>
+		<div class="field">
+			<label class="label">Category</label>
+			{{ form.category }}
+		</div>
+		<div class="field">
+			<label class="label">Completed</label>
+			{{ form.completed }}
+		</div>
+	</div>
+	<div class="actions">
+		<button class="btn primary" type="submit">Save</button>
+		<button class="btn" data-close type="button">Cancel</button>
+	</div>
+</form>
+
